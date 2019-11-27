@@ -708,15 +708,10 @@
                 float2 Set_UV0 = i.uv0;
                 //v.2.0.6
                 //float3 _NormalMap_var = UnpackNormal(tex2D(_NormalMap,TRANSFORM_TEX(Set_UV0, _NormalMap)));
-#ifdef UCTS_LWRP
                 float3 _NormalMap_var = UnpackNormalScale(tex2D(_NormalMap, TRANSFORM_TEX(Set_UV0, _NormalMap)), _BumpScale);
-#else
-				float3 _NormalMap_var = UnpackScaleNormal(tex2D(_NormalMap, TRANSFORM_TEX(Set_UV0, _NormalMap)), _BumpScale);
-#endif
                 float3 normalLocal = _NormalMap_var.rgb;
                 float3 normalDirection = normalize(mul( normalLocal, tangentTransform )); // Perturbed normals
 
-#ifdef UCTS_LWRP
 				// todo. not necessary to calc gi factor in  shadowcaster pass.
 				SurfaceData surfaceData;
 				InitializeStandardLitSurfaceData(i.uv0, surfaceData);
@@ -757,7 +752,6 @@
 				half3 envColor = GlobalIllumination(brdfData, inputData.bakedGI, surfaceData.occlusion, inputData.normalWS, inputData.viewDirectionWS);
 				envColor *= 1.8f;
 
-#endif //UCTS_LWRP
 
 
                 float4 _MainTex_var = tex2D(_MainTex,TRANSFORM_TEX(Set_UV0, _MainTex));
