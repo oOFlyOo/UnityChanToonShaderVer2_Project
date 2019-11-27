@@ -11,10 +11,7 @@
 	    uniform float _utsTechnique;
 
             uniform sampler2D _MainTex; uniform float4 _MainTex_ST;
-#if UCTS_LWRP
-#else
-            uniform float4 _BaseColor;
-#endif
+
             //v.2.0.5
             uniform float4 _Color;
             uniform fixed _Use_BaseAs1st;
@@ -102,10 +99,7 @@
             uniform float _CameraRolling_Stabilizer;
             uniform fixed _BlurLevelMatcap;
             uniform fixed _Inverse_MatcapMask;
-#if UCTS_LWRP
-#else
-            uniform float _BumpScale;
-#endif
+
             uniform float _BumpScaleMatcap;
             //Emissive
             uniform sampler2D _Emissive_Tex; uniform float4 _Emissive_Tex_ST;
@@ -201,7 +195,6 @@
                 float4 tangent : TANGENT;
                 float2 texcoord0 : TEXCOORD0;
 
-#if UCTS_LWRP
 #ifdef _IS_ANGELRING_OFF
 				float2 lightmapUV   : TEXCOORD1;
 #elif _IS_ANGELRING_ON
@@ -209,7 +202,6 @@
 				float2 lightmapUV   : TEXCOORD2;
 #endif
 				UNITY_VERTEX_INPUT_INSTANCE_ID
-#endif
             };
             struct VertexOutput {
                 float4 pos : SV_POSITION;
@@ -222,7 +214,7 @@
                 float3 bitangentDir : TEXCOORD4;
                 //v.2.0.7
                 float mirrorFlag : TEXCOORD5;
-#if UCTS_LWRP
+
 				DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 6);
 				half4 fogFactorAndVertexLight   : TEXCOORD7; // x: fogFactor, yzw: vertex light
 # ifndef _MAIN_LIGHT_SHADOWS
@@ -233,10 +225,7 @@
 # endif
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
-#else //#if UCTS_LWRP
-                LIGHTING_COORDS(6,7)
-                UNITY_FOG_COORDS(8)
-#endif //#if UCTS_LWRP
+
                 //
 #elif _IS_ANGELRING_ON
                 float2 uv1 : TEXCOORD1;
@@ -246,7 +235,7 @@
                 float3 bitangentDir : TEXCOORD5;
                 //v.2.0.7
                 float mirrorFlag : TEXCOORD6;
-#if UCTS_LWRP
+
 				DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 7);
 				half4 fogFactorAndVertexLight   : TEXCOORD8; // x: fogFactor, yzw: vertex light
 # ifndef _MAIN_LIGHT_SHADOWS
@@ -257,21 +246,18 @@
 # endif
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
-#else
-                LIGHTING_COORDS(7,8)
-                UNITY_FOG_COORDS(9)
-#endif
+
                 //
 #endif
             };
  
             VertexOutput vert (VertexInput v) {
                 VertexOutput o = (VertexOutput)0;
-#ifdef UCTS_LWRP
+
 				UNITY_SETUP_INSTANCE_ID(v);
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-#endif
+
                 o.uv0 = v.texcoord0;
 //v.2.0.4
 #ifdef _IS_ANGELRING_OFF
@@ -289,7 +275,7 @@
                 float3 crossFwd = cross(UNITY_MATRIX_V[0], UNITY_MATRIX_V[1]);
                 o.mirrorFlag = dot(crossFwd, UNITY_MATRIX_V[2]) < 0 ? 1 : -1;
                 //
-#ifdef UCTS_LWRP
+
 				float3 positionWS = TransformObjectToWorld(v.vertex);
 				float4 positionCS = TransformWorldToHClip(positionWS);
 				half3 vertexLight = VertexLighting(o.posWorld, o.normalDir);
@@ -308,10 +294,7 @@
     #endif
   #endif
 
-#else		
-				UNITY_TRANSFER_FOG(o, o.pos);
-				TRANSFER_VERTEX_TO_FRAGMENT(o)
-#endif		
+	
                 return o;
             }
 
@@ -325,15 +308,12 @@
                 float2 Set_UV0 = i.uv0;
                 //v.2.0.6
 
-#ifdef UCTS_LWRP
+
                 float3 _NormalMap_var = UnpackNormalScale(tex2D(_NormalMap, TRANSFORM_TEX(Set_UV0, _NormalMap)), _BumpScale);
-#else
-                float3 _NormalMap_var = UnpackScaleNormal(tex2D(_NormalMap,TRANSFORM_TEX(Set_UV0, _NormalMap)), _BumpScale);
-#endif
                 float3 normalLocal = _NormalMap_var.rgb;
                 float3 normalDirection = normalize(mul( normalLocal, tangentTransform )); // Perturbed normals
 
-#ifdef UCTS_LWRP
+
 				// todo. not necessary to calc gi factor in  shadowcaster pass.
 				SurfaceData surfaceData;
 				InitializeStandardLitSurfaceData(i.uv0, surfaceData);
@@ -374,7 +354,7 @@
 				half3 envColor = GlobalIllumination(brdfData, inputData.bakedGI, surfaceData.occlusion, inputData.normalWS, inputData.viewDirectionWS);
 				envColor *= 1.8f;
 
-#endif //UCTS_LWRP
+
 
                 float4 _MainTex_var = tex2D(_MainTex,TRANSFORM_TEX(Set_UV0, _MainTex));
 //v.2.0.4
