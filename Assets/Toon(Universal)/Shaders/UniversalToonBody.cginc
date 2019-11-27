@@ -369,16 +369,13 @@
                 clip(Set_Clipping - 0.5);
 #endif
 
-#ifdef UCTS_LWRP
+
 				half attenuation = 1.0;
 # ifdef _MAIN_LIGHT_SHADOWS
 				Light mainLight = GetMainLight(i.shadowCoord);
 //				attenuation = mainLight.distanceAttenuation; 
 				attenuation = mainLight.shadowAttenuation;
 # endif
-#else
-                UNITY_LIGHT_ATTENUATION(attenuation, i, i.posWorld.xyz);
-#endif
 
 //v.2.0.4
                 float3 defaultLightDirection = normalize(UNITY_MATRIX_V[2].xyz + UNITY_MATRIX_V[1].xyz);
@@ -388,13 +385,10 @@
                 float3 lightDirection = normalize(lerp(defaultLightDirection,_WorldSpaceLightPos0.xyz,any(_WorldSpaceLightPos0.xyz)));
                 lightDirection = lerp(lightDirection, customLightDirection, _Is_BLD);
                 //v.2.0.5: 
-#ifdef UCTS_LWRP
 				half3 originalLightColor = _LightColor0.rgb;
 
 				float3 lightColor = lerp(max(defaultLightColor, originalLightColor), max(defaultLightColor, saturate(originalLightColor)), _Is_Filter_LightColor);
-#else
-                float3 lightColor = lerp(max(defaultLightColor,_LightColor0.rgb),max(defaultLightColor,saturate(_LightColor0.rgb)),_Is_Filter_LightColor);
-#endif
+
 
 ////// Lighting:
                 float3 halfDirection = normalize(viewDirection+lightDirection);
@@ -473,11 +467,8 @@
                 //v.2.0.7
                 float2 _Rot_MatCapNmUV_var = RotateUV(Set_UV0, (_Rotate_NormalMapForMatCapUV*3.141592654), float2(0.5, 0.5), 1.0);
                 //V.2.0.6
-#ifdef UCTS_LWRP	// Todo. not ready for 2.0.6
+
                 float3 _NormalMapForMatCap_var = UnpackNormalScale(tex2D(_NormalMapForMatCap, TRANSFORM_TEX(_Rot_MatCapNmUV_var, _NormalMapForMatCap)), _BumpScaleMatcap);
-#else
-                float3 _NormalMapForMatCap_var = UnpackScaleNormal(tex2D(_NormalMapForMatCap,TRANSFORM_TEX(_Rot_MatCapNmUV_var, _NormalMapForMatCap)),_BumpScaleMatcap);
-#endif
                 //v.2.0.5: MatCap with camera skew correction
                 float3 viewNormal = (mul(UNITY_MATRIX_V, float4(lerp( i.normalDir, mul( _NormalMapForMatCap_var.rgb, tangentTransform ).rgb, _Is_NormalMapForMatCap ),0))).rgb;
                 float3 NormalBlend_MatcapUV_Detail = viewNormal.rgb * float3(-1,-1,1);
@@ -1071,10 +1062,7 @@
     				float Set_Opacity = saturate((_Inverse_Clipping_var+_Tweak_transparency));
                 	fixed4 finalRGBA = fixed4(finalColor,Set_Opacity);
 #endif
-#ifdef  UCTS_LWRP
-#else
-					UNITY_APPLY_FOG(i.fogCoord, finalRGBA);
-#endif	
+
                 return finalRGBA;
             }
 #endif //#if defined(_SHADINGGRADEMAP)
