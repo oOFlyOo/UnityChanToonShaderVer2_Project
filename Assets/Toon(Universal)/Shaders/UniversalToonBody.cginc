@@ -561,15 +561,11 @@
 #endif
 //
                 //v.2.0.6: GI_Intensity with Intensity Multiplier Filter
-#ifdef UCTS_LWRP
+
 				float3 envLightColor = envColor.rgb;
-#else
-                float3 envLightColor = DecodeLightProbe(normalDirection) < float3(1,1,1) ? DecodeLightProbe(normalDirection) : float3(1,1,1);
-#endif
                 float envLightIntensity = 0.299*envLightColor.r + 0.587*envLightColor.g + 0.114*envLightColor.b <1 ? (0.299*envLightColor.r + 0.587*envLightColor.g + 0.114*envLightColor.b) : 1;
 
 
-#ifdef UCTS_LWRP
 				float3 pointLightColor = 0;
   #ifdef _ADDITIONAL_LIGHTS
 
@@ -677,15 +673,12 @@
 				}
 
   #endif
-#endif
 				//
                 //Final Composition
                 finalColor =  saturate(finalColor) + (envLightColor*envLightIntensity*_GI_Intensity*smoothstep(1,0,envLightIntensity/2)) + emissive;
 
-#ifdef UCTS_LWRP
 				finalColor += pointLightColor;
 ///				finalColor = envColor;
-#endif
 
 
 
@@ -696,10 +689,6 @@
 	                float Set_Opacity = saturate((_Inverse_Clipping_var+_Tweak_transparency));
 	                fixed4 finalRGBA = fixed4(finalColor,Set_Opacity);
 #endif
-#ifdef  UCTS_LWRP
-#else
-                UNITY_APPLY_FOG(i.fogCoord, finalRGBA);
-#endif	
 
                 return finalRGBA;
 
