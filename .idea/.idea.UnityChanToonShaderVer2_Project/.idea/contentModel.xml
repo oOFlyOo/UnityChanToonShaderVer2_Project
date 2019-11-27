@@ -200,13 +200,6 @@
             <e p="Utj.Experimental.UTS2LWRP.asmdef" t="Include" />
           </e>
           <e p="Shaders" t="Include">
-            <e p="Toon_DoubleShadeWithFeather(Universal).shader" t="Include" />
-            <e p="Toon_DoubleShadeWithFeather_Clipping(Universal).shader" t="Include" />
-            <e p="Toon_DoubleShadeWithFeather_Clipping_StencilMask(Universal).shader" t="Include" />
-            <e p="Toon_DoubleShadeWithFeather_Clipping_StencilOut(Universal).shader" t="Include" />
-            <e p="Toon_DoubleShadeWithFeather_StencilOut(Universal).shader" t="Include" />
-            <e p="Toon_ShadingGradeMap(Universal).shader" t="Include" />
-            <e p="Toon_ShadingGradeMap_AngelRing(Universal).shader" t="Include" />
             <e p="UCTS_LWRP.cginc" t="Include" />
             <e p="UCTS_Outline.cginc" t="Include" />
             <e p="UniversalToon.shader" t="Include" />

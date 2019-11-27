@@ -65,6 +65,7 @@
       <Path>Logs</Path>
       <Path>Manual</Path>
       <Path>Temp</Path>
+      <Path>compileLogs</Path>
       <Path>obj</Path>
     </explicitExcludes>
   </component>
