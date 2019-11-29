@@ -197,38 +197,6 @@ Shader "Universal Render Pipeline/Toon" {
         Tags {
             "RenderType"="Opaque"
         }
-        Pass {
-            Name "Outline"
-            Tags {
-				"LightMode" = "SRPDefaultUnlit"
-            }
-            Cull Front
-
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            #include "UnityCG.cginc"
-            //#pragma fragmentoption ARB_precision_hint_fastest
-            //#pragma multi_compile_shadowcaster
-            //#pragma multi_compile_fog
-            #pragma only_renderers d3d9 d3d11 glcore gles gles3 metal xboxone ps4 switch
-            #pragma target 3.0
-            //V.2.0.4
-            #pragma multi_compile _IS_OUTLINE_CLIPPING_NO 
-            #pragma multi_compile _OUTLINE_NML _OUTLINE_POS
-            //アウトライン処理はUTS_Outline.cgincへ.
-            #include "UCTS_Outline.cginc"
-            ENDCG
-        }
-        Stencil
-        {
-            Ref[_StencilNo]
-            Comp[_StencilComp]
-            Pass[_StencilOpPass]
-            Fail[_StencilOpFail]
-//            ReadMask[_StencilReadMask]
-//            WriteMask[_StencilWriteMask]
-        }
 //ToonCoreStart
         Pass {
             Name "FORWARD"
@@ -236,29 +204,13 @@ Shader "Universal Render Pipeline/Toon" {
                 "LightMode"="LightweightForward"
             }
 
-            Cull[_CullMode]
-            Stencil {
-                Ref[_StencilNo]
-
-                Comp[_StencilComp]
-                Pass[_StencilOpPass]
-                Fail[_StencilOpFail]
-//                ReadMask[_StencilReadMask]
-//               WriteMask[_StencilWriteMask]
-            }
 
             HLSLPROGRAM
-            #pragma prefer_hlslcc gles
-            #pragma exclude_renderers d3d11_9x
-            #pragma target 3.0
+            #pragma target 5.0
 
 	    #pragma vertex vert
             #pragma fragment frag
 	    //#define UNITY_PASS_FORWARDBASE
-
-
-
-
 
             // -------------------------------------
             // Material Keywords
@@ -283,7 +235,7 @@ Shader "Universal Render Pipeline/Toon" {
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
-            #pragma multi_compile _ _SHADOWS_SOFT
+            //#pragma multi_compile _ _SHADOWS_SOFT
 
             #pragma multi_compile _ _MIXED_LIGHTING_SUBTRACTIVE
             // -------------------------------------
@@ -295,7 +247,7 @@ Shader "Universal Render Pipeline/Toon" {
             #pragma multi_compile   _IS_PASS_FWDBASE
             #pragma multi_compile   _ENVIRONMENTREFLECTIONS_OFF
             // DoubleShadeWithFeather and ShadingGradeMap use different fragment shader.  
-            #pragma shader_feature _ _SHADINGGRADEMAP
+            //#pragma shader_feature _ _SHADINGGRADEMAP
 
 
             // used in ShadingGradeMap
@@ -315,70 +267,6 @@ Shader "Universal Render Pipeline/Toon" {
 
             ENDHLSL
             
-        }
-
-        Pass
-        {
-            Name "ShadowCaster"
-            Tags{"LightMode" = "ShadowCaster"}
-
-            ZWrite On
-            ZTest LEqual
-            Cull[_Cull]
-
-            HLSLPROGRAM
-            // Required to compile gles 2.0 with standard srp library
-            #pragma prefer_hlslcc gles
-            #pragma exclude_renderers d3d11_9x
-            #pragma target 2.0
-
-            // -------------------------------------
-            // Material Keywords
-            #pragma shader_feature _ALPHATEST_ON
-
-            //--------------------------------------
-            // GPU Instancing
-            #pragma multi_compile_instancing
-            #pragma shader_feature _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-
-            #pragma vertex ShadowPassVertex
-            #pragma fragment ShadowPassFragment
-
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl"
-            ENDHLSL
-        }
-
-        Pass
-        {
-            Name "DepthOnly"
-            Tags{"LightMode" = "DepthOnly"}
-
-            ZWrite On
-            ColorMask 0
-            Cull[_Cull]
-
-            HLSLPROGRAM
-            // Required to compile gles 2.0 with standard srp library
-            #pragma prefer_hlslcc gles
-            #pragma exclude_renderers d3d11_9x
-            #pragma target 2.0
-
-            #pragma vertex DepthOnlyVertex
-            #pragma fragment DepthOnlyFragment
-
-            // -------------------------------------
-            // Material Keywords
-            #pragma shader_feature _ALPHATEST_ON
-            #pragma shader_feature _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-
-            //--------------------------------------
-            // GPU Instancing
-            #pragma multi_compile_instancing
-
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/DepthOnlyPass.hlsl"
-            ENDHLSL
         }
 
 //ToonCoreEnd
