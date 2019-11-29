@@ -8,6 +8,7 @@
 //#pragma multi_compile _IS_CLIPPING_OFF _IS_CLIPPING_MODE  _IS_CLIPPING_TRANSMODE
 //#pragma multi_compile _IS_PASS_FWDBASE _IS_PASS_FWDDELTA
 //
+
             uniform sampler2D _MainTex; uniform float4 _MainTex_ST;
             uniform sampler2D _1st_ShadeMap; uniform float4 _1st_ShadeMap_ST;
             uniform sampler2D _2nd_ShadeMap; uniform float4 _2nd_ShadeMap_ST;
@@ -22,6 +23,7 @@
             uniform sampler2D _Set_MatcapMask; uniform float4 _Set_MatcapMask_ST;
             uniform sampler2D _Emissive_Tex; uniform float4 _Emissive_Tex_ST;
             uniform sampler2D _ClippingMask; uniform float4 _ClippingMask_ST;
+
 
             struct VertexInput {
                 float4 vertex : POSITION;
@@ -79,7 +81,4 @@
                 ;
 
                 return float4(finalColor.rgb,1);                      
-
-
-
             }
