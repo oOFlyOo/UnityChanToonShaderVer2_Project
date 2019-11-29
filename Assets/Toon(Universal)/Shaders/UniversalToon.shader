@@ -254,8 +254,6 @@ Shader "Universal Render Pipeline/Toon" {
             #pragma shader_feature _IS_TRANSCLIPPING_OFF _IS_TRANSCLIPPING_ON
             #pragma shader_feature _IS_ANGELRING_OFF _IS_ANGELRING_ON
 
-            // used in DoubleShadeWithFeather
-            #pragma shader_feature _IS_CLIPPING_OFF _IS_CLIPPING_MODE _IS_CLIPPING_TRANSMODE
 
             #pragma shader_feature _EMISSIVE_SIMPLE _EMISSIVE_ANIMATION
 	    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"

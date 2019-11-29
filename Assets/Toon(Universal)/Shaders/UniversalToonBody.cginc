@@ -124,22 +124,10 @@
             uniform float _Offset_X_Axis_BLD;
             uniform float _Offset_Y_Axis_BLD;
             uniform fixed _Inverse_Z_Axis_BLD;
-//v.2.0.4
-#ifdef _IS_CLIPPING_MODE
-//DoubleShadeWithFeather_Clipping
+
             uniform sampler2D _ClippingMask; uniform float4 _ClippingMask_ST;
             uniform float _Clipping_Level;
             uniform fixed _Inverse_Clipping;
-#elif defined(_IS_CLIPPING_TRANSMODE) || defined(_IS_TRANSCLIPPING_ON)
-//DoubleShadeWithFeather_TransClipping
-            uniform sampler2D _ClippingMask; uniform float4 _ClippingMask_ST;
-            uniform fixed _IsBaseMapAlphaAsClippingMask;
-            uniform float _Clipping_Level;
-            uniform fixed _Inverse_Clipping;
-            uniform float _Tweak_transparency;
-#elif defined(_IS_CLIPPING_OFF) || defined(_IS_TRANSCLIPPING_OFF)
-//DoubleShadeWithFeather
-#endif
 
 
             // UV回転をする関数：RotateUV()
@@ -281,6 +269,9 @@
 
         float4 fragDoubleShadeFeather(VertexOutput i, fixed facing : VFACE) : SV_TARGET 
         {
+
+
+
                 i.normalDir = normalize(i.normalDir);
 			    float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.posWorld.xyz);
 
@@ -339,24 +330,9 @@
 
 
                 float4 _MainTex_var = tex2D(_MainTex,TRANSFORM_TEX(Set_UV0, _MainTex));
-//v.2.0.4
-#if defined(_IS_CLIPPING_MODE) 
-//DoubleShadeWithFeather_Clipping
                 float4 _ClippingMask_var = tex2D(_ClippingMask,TRANSFORM_TEX(Set_UV0, _ClippingMask));
                 float Set_Clipping = saturate((lerp( _ClippingMask_var.r, (1.0 - _ClippingMask_var.r), _Inverse_Clipping )+_Clipping_Level));
                 clip(Set_Clipping - 0.5);
-#elif defined(_IS_CLIPPING_TRANSMODE) || defined(_IS_TRANSCLIPPING_ON)
-//DoubleShadeWithFeather_TransClipping
-                float4 _ClippingMask_var = tex2D(_ClippingMask,TRANSFORM_TEX(Set_UV0, _ClippingMask));
-                float Set_MainTexAlpha = _MainTex_var.a;
-                float _IsBaseMapAlphaAsClippingMask_var = lerp( _ClippingMask_var.r, Set_MainTexAlpha, _IsBaseMapAlphaAsClippingMask );
-                float _Inverse_Clipping_var = lerp( _IsBaseMapAlphaAsClippingMask_var, (1.0 - _IsBaseMapAlphaAsClippingMask_var), _Inverse_Clipping );
-                float Set_Clipping = saturate((_Inverse_Clipping_var+_Clipping_Level));
-                clip(Set_Clipping - 0.5);
-
-#elif defined(_IS_CLIPPING_OFF) || defined(_IS_TRANSCLIPPING_OFF)
-//DoubleShadeWithFeather
-#endif
 
 
 				half attenuation = 1.0;
@@ -602,19 +578,7 @@
 				finalColor += pointLightColor;
 ///				finalColor = envColor;
 
-//v.2.0.4
-#ifdef _IS_CLIPPING_OFF
-//DoubleShadeWithFeather
 	                fixed4 finalRGBA = fixed4(finalColor,1);
-#elif _IS_CLIPPING_MODE
-//DoubleShadeWithFeather_Clipping
-	                fixed4 finalRGBA = fixed4(finalColor,1);
-#elif _IS_CLIPPING_TRANSMODE
-//DoubleShadeWithFeather_TransClipping
-    				float Set_Opacity = saturate((_Inverse_Clipping_var+_Tweak_transparency));
-                	fixed4 finalRGBA = fixed4(finalColor,Set_Opacity);
-#endif
-
 
                 return finalRGBA;
             }
