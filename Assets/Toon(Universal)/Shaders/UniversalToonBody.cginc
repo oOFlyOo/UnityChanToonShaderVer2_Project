@@ -9,6 +9,7 @@
 //#pragma multi_compile _IS_PASS_FWDBASE _IS_PASS_FWDDELTA
 //
 
+
             uniform sampler2D _MainTex; uniform float4 _MainTex_ST;
             uniform sampler2D _1st_ShadeMap; uniform float4 _1st_ShadeMap_ST;
             uniform sampler2D _2nd_ShadeMap; uniform float4 _2nd_ShadeMap_ST;
@@ -38,8 +39,6 @@
                 return o;
             }
 
-
-
             float4 frag(VertexOutput i, fixed facing : VFACE) : SV_TARGET
             {
                 const float2 zero_uv = float2(0.5,0.5);
@@ -61,6 +60,8 @@
 				const float attenuation = SAMPLE_TEXTURE2D_SHADOW(_MainLightShadowmapTexture, sampler_MainLightShadowmapTexture, float3(zero_uv,1)).r;
                 const float4 _Set_RimLightMask_var = tex2D(_Set_RimLightMask,zero_uv);
                 const float4 _HighColor_Tex_var = tex2D(_HighColor_Tex,zero_uv);
+
+
 
                 float3 finalColor = _NormalMap_var.rgb 
                     + _MainTex_var.rgb                     
