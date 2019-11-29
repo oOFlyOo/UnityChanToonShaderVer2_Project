@@ -52,5 +52,5 @@ Shader "Universal Render Pipeline/Toon" {
 
 //ToonCoreEnd
     }
-    CustomEditor "UnityChan.UniversalToonGUI"
+
 }
