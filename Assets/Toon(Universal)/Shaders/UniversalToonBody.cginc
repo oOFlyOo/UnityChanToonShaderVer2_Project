@@ -8,7 +8,18 @@
 //#pragma multi_compile _IS_CLIPPING_OFF _IS_CLIPPING_MODE  _IS_CLIPPING_TRANSMODE
 //#pragma multi_compile _IS_PASS_FWDBASE _IS_PASS_FWDDELTA
 //
-
+inline float4 UnityObjectToClipPosInstanced(in float3 pos)
+{
+//    return mul(UNITY_MATRIX_VP, mul(unity_ObjectToWorldArray[unity_InstanceID], float4(pos, 1.0)));
+      // todo. right?
+      return mul(UNITY_MATRIX_VP, mul(unity_ObjectToWorld, float4(pos, 1.0)));
+}
+inline float4 UnityObjectToClipPosInstanced(float4 pos)
+{
+    return UnityObjectToClipPosInstanced(pos.xyz);
+}
+#define UnityObjectToClipPos UnityObjectToClipPosInstanced
+#define fixed  half
 
             uniform sampler2D _MainTex; uniform float4 _MainTex_ST;
             uniform sampler2D _1st_ShadeMap; uniform float4 _1st_ShadeMap_ST;
