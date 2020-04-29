@@ -556,11 +556,13 @@
                 input.vertexSH = i.vertexSH;
                 input.uv = i.uv0;
                 input.fogFactorAndVertexLight = i.fogFactorAndVertexLight;
-#  ifdef _MAIN_LIGHT_SHADOWS
+#  ifdef REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR
+// #  ifdef _MAIN_LIGHT_SHADOWS
                 input.shadowCoord = i.shadowCoord;
 #  endif
 
-#  ifdef _ADDITIONAL_LIGHTS
+#  ifdef REQUIRES_WORLD_SPACE_POS_INTERPOLATOR
+// #  ifdef _ADDITIONAL_LIGHTS
                 input.positionWS = i.posWorld.xyz;
 #  endif
 #  ifdef _NORMALMAP
@@ -995,11 +997,13 @@
                 input.vertexSH = i.vertexSH;
                 input.uv = i.uv0;
                 input.fogFactorAndVertexLight = i.fogFactorAndVertexLight;
-#  ifdef _MAIN_LIGHT_SHADOWS
+#  ifdef REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR
+// #  ifdef _MAIN_LIGHT_SHADOWS
                 input.shadowCoord = i.shadowCoord;
 #  endif
 
-#  ifdef _ADDITIONAL_LIGHTS
+#  ifdef REQUIRES_WORLD_SPACE_POS_INTERPOLATOR
+// #  ifdef _ADDITIONAL_LIGHTS
                 input.positionWS = i.posWorld.xyz;
 #  endif
 #  ifdef _NORMALMAP
