@@ -1,4 +1,4 @@
-﻿# 【UTS2 / UniversalToon Ver.2.9.9】
+﻿# 【UTS2 / UniversalToon Ver.8.0.0】
 ---
 <img width = "800" src="Manual/Images_jpg/UTS2_TopImage00.jpg">
 
@@ -89,7 +89,7 @@ https://unity-chan.com/contents/guideline/
 
 -----
 ## 【シェーダーのインストール】
-### [UTS2URP_ShaderOnly_v2.9.9.unitypackage](https://github.com/unity3d-jp/UnityChanToonShaderVer2_Project/blob/urp/master/UTS2URP_ShaderOnly_v2.9.9.unitypackage)  
+### [UTS2URP_ShaderOnly_v8.0.0.unitypackage](https://github.com/unity3d-jp/UnityChanToonShaderVer2_Project/blob/urp/master/UTS2URP_ShaderOnly_v8.0.0.unitypackage)  
 
 新規インストールは、Unityにそのまま本パッケージをD&Dすればインストールされます。  
 **事前にPackage ManagerからUniversal RPをインストールしておくことが必要です。**  
@@ -109,7 +109,7 @@ UTS2のリリース履歴は、[こちら](https://github.com/unity3d-jp/UnityCh
 
 -----
 ## 【インフォメーション】  
-最新バージョン：2.9.9 URP専用  
+最新バージョン：8.0.0 URP専用  
 最終リリース日：2020/03/31  
 カテゴリー：3D / Shader  
 形式：unitypackage  

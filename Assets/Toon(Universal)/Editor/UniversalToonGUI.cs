@@ -1,7 +1,7 @@
-﻿//Unitychan Toon Shader ver.2.0
-//v.2.9.9
+﻿//Unitychan Toon Shader ver.8.0
+//v.8.0.0
 //nobuyuki@unity3d.com
-//toshiyuki@unity3d.com (Univerasl RP) 
+//toshiyuki@unity3d.com (Univerasl RP/HDRP) 
 //https://github.com/unity3d-jp/UnityChanToonShaderVer2_Project
 //(C)Unity Technologies Japan/UCL
 using UnityEngine;
@@ -642,9 +642,11 @@ namespace UnityEditor.Rendering.Universal.Toon.ShaderGUI
                 switch (technique)
                 {
                     case _UTS_Technique.DoubleShadeWithFeather:
+                        GUILayout.Label("Clipping Shader", EditorStyles.boldLabel);
                         DoPopup(clippingmodeModeText0, clippingMode, System.Enum.GetNames(typeof(_UTS_ClippingMode)));
                         break;
                     case _UTS_Technique.ShadingGradeMap:
+                        GUILayout.Label("TransClipping Shader", EditorStyles.boldLabel);
                         DoPopup(clippingmodeModeText1, clippingMode, System.Enum.GetNames(typeof(_UTS_TransClippingMode)));
                         break;
                 }
@@ -937,7 +939,15 @@ namespace UnityEditor.Rendering.Universal.Toon.ShaderGUI
 
             if (_Transparent_Setting == _UTS_Transparent.On)
             {
-
+                if ( material.GetInt(ShaderPropUtsTechniqe) == (int)_UTS_Technique.DoubleShadeWithFeather )
+                {
+                    material.SetInt(ShaderPropClippingMode, (int)_UTS_ClippingMode.TransClippingMode);
+                }
+                else
+                {
+                    // ShadingGradeMap
+                    material.SetInt(ShaderPropClippingMode, (int)_UTS_TransClippingMode.On);
+                }
                 material.SetInt(_ZWriteMode, 0);
                 material.SetFloat(_ZOverDrawMode, 1);
             }
@@ -951,7 +961,7 @@ namespace UnityEditor.Rendering.Universal.Toon.ShaderGUI
 
         void GUI_StencilMode(Material material)
         {
-            GUILayout.Label("For _StencilMask or _StencilOut Shader", EditorStyles.boldLabel);
+            GUILayout.Label("StencilMask or StencilOut Shader", EditorStyles.boldLabel);
             DoPopup(stencilmodeModeText, stencilMode, System.Enum.GetNames(typeof(_UTS_StencilMode)));
 
 
@@ -966,7 +976,7 @@ namespace UnityEditor.Rendering.Universal.Toon.ShaderGUI
 
         void GUI_SetClippingMask(Material material)
         {
-            GUILayout.Label("For _Clipping or _TransClipping Shader", EditorStyles.boldLabel);
+            GUILayout.Label("Options for Clipping or TransClipping features", EditorStyles.boldLabel);
             m_MaterialEditor.TexturePropertySingleLine(Styles.clippingMaskText, clippingMask);
 
             EditorGUILayout.BeginHorizontal();
@@ -994,7 +1004,7 @@ namespace UnityEditor.Rendering.Universal.Toon.ShaderGUI
         void GUI_SetTransparencySetting(Material material)
         {
 
-            GUILayout.Label("For _TransClipping Shader", EditorStyles.boldLabel);
+            GUILayout.Label("Options for TransClipping or Transparent features", EditorStyles.boldLabel);
             m_MaterialEditor.RangeProperty(tweak_transparency, "Transparency Level");
 
             EditorGUILayout.BeginHorizontal();

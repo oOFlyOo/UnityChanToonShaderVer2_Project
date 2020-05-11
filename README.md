@@ -1,4 +1,4 @@
-﻿# 【UTS2 / UniversalToon Ver.2.9.9】
+﻿# 【UTS2 / UniversalToon Ver.8.0.0】
 ---
 <img width = "800" src="Manual/Images_jpg/UTS2_TopImage00.jpg">
 
@@ -87,7 +87,7 @@ The project comes with sample scenes where you can learn various setting example
 
 -----
 ## 【Shader Installation】
-### [UTS2URP_ShaderOnly_v2.9.9.unitypackage](https://github.com/unity3d-jp/UnityChanToonShaderVer2_Project/blob/urp/master/UTS2URP_ShaderOnly_v2.9.9.unitypackage)  
+### [UTS2URP_ShaderOnly_v8.0.0.unitypackage](https://github.com/unity3d-jp/UnityChanToonShaderVer2_Project/blob/urp/master/UTS2URP_ShaderOnly_v8.0.0.unitypackage)  
 
 When installing for the first time, simply drag and drop this package into Unity to begin the installation process.  
 **You should install Universal RP from Package Manager before installation.**  
@@ -107,7 +107,7 @@ The release history of UTS2 is [here.](https://github.com/unity3d-jp/UnityChanTo
 
 -----
 ## 【Information】  
-Latest Version: 2.9.9 for URP  
+Latest Version: 8.0.0 for URP  
 Update: 2020/03/31  
 Category: 3D / Shader  
 File format: unitypackage  
